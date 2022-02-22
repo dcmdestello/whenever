@@ -9,7 +9,7 @@ At Wikifactory we use Mobx to allow views to render state in a reaction (the sam
 
 For these purposes I think it would be useful to have a primitive to 'do something whenever a predicate becomes true'. e.g. when the router is at a certain path, load a particular 'Application' or 'Query'.
 
-`when(() => route.name === 'issues', () => new IssuesPageApp())`
+`when(route.name === 'issues', () => new IssuesPageApp())`
 
 This is distinct from the Mobx `when` function which fires an effect when it's predictate becomes true and then disposes itself (stops listening). Here we want to do something whenever the predicate becomes true. If it becomes false, we will wait for it to become true again.
 
@@ -80,8 +80,6 @@ export class IssuesPageApp {
 
   @observable issueForm = new Form();
 
-  @observable issuesQuery: IssuesQuery;
-
   constructor() {
     when(
       () => this.issueForm.submitting,
@@ -89,22 +87,24 @@ export class IssuesPageApp {
         this.issuesMutation.fetch();
       },
       [
-        () =>
+        () => {
           when(
             () => !!this.issuesQuery.result,
             () => {
               this.issues = this.issuesQuery.result.issues;
               this.issueForm.submitting = false;
             },
-          ),
-        () =>
+          );
+        },
+        () => {
           when(
             () => !!this.issuesQuery.error,
-            err => {
+            () => {
               this.errors.push(this.issuesQuery.error);
               this.issueForm.submitting = false;
             },
-          ),
+          );
+        },
       ],
     );
   }
@@ -119,7 +119,7 @@ If the outer predicate becomes false, all inner `when` statements should be disp
 
 ## Suggested Extensions
 
-It might be useful to return the value of an outer `when` effect (and possible observables created there) to an inner `when` statement, in a similar vein to chained promises. This would mean that observables constructed in the outer `when` could be passed to the inner `when` and used in both its 'predicate' and 'effect'.
+It might be useful to return the value of an outer `when` statement (and possible observables created there) to an inner `when` statement, in a similar vein to chained promises. This would mean that observables constructed in the outer `when` could be passed to the inner `when` and used in both it's 'predicate' and 'effect'.
 
 For something like the semantics of data subscription management we might find it useful to have a clean up function that runs when the predicate become false.
 
@@ -133,7 +133,7 @@ Or perhaps
 
 ```js
 when(predicate1, effect, [
-  () => when(predicate2, subscribe),
+  () => when(predicate2, subscribe)
   () => whenNot(predicate2, unsubscribe)
 ])
 
