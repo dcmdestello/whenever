@@ -88,9 +88,9 @@ The last few paragraphs are somewhat relevant for these questions.
 
 If we look at a simple usage of `whenever(predicate, effect)` we have to realize that this construct looks at *changes* of the predicate. Which means that more imperative use cases are not handled. For example, `when(() => route.name === 'issues', () => new IssuesPageApp())` works when we get into the route, but does nothing to handle a `forceRefreshApp()`.
 
-To address this the imperative call could switch off and on some value so that `whenever` detects the change and runs the effect. (e.g. `shouldLoad` should be put to `false` after loading so that it can be put to `true` when someone calls an imperative function `load()`).
+To address this, the imperative call could switch off and on some value so that `whenever` detects the change and runs the effect. (e.g. `shouldLoad` should be put to `false` after loading so that it can be put to `true` when someone calls an imperative function `load()`).
 
-In regard to the `reaction` suggestion I made previously, the *changes* that `whenever` detects are for a boolean predicate, which makes it difficult to launch effect whenever some id changes, from one valid id to another valid id, to create some side-effect. This can be addressed by using or emulating the `reaction` methodology.
+In regards to the `reaction` suggestion I made previously, the *changes* that `whenever` detects are for a boolean predicate, which makes it difficult to launch effect whenever some id changes, from one valid id to another valid id, to create some side-effect. This can be addressed by using or emulating the `reaction` methodology.
 
 Finally, I am going to think out loud a little bit of a convoluted example with nesting. Consider the example of `when.md`:
 
