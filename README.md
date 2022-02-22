@@ -27,7 +27,7 @@ The boolean statement checking mobX observables.
 The function to be executed each time predicate becomes true. It can return nothing or some values that will be passed to the nestedWhenevers
 
 
-##### effect: `Array<(arg: any) => whenever(...)>`
+##### nestedWhenevers: `Array<(arg: any) => whenever(...)>`
 
 An array of functions, each creating a nested whenever effect. Each function receives an argument with the result of `effect` and must return a whenever statement (this is enforced by Typescript). Given the scope of `arg`, the inner whenever can use it in any of its parameters (like predicate and effect).
 
