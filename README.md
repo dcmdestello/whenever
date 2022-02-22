@@ -38,7 +38,7 @@ Nested whenevers will be evaluated only when its outer whenever statement has a 
 Unsubscribe can be used to clean up the effects of whenever.
 
 Unsubscribe will only run if its corresponding effect has executed previously and has not been cleaned up. Keeping that in mind, then it will be executed:
-* The predicate *becomes* false.
+* When the predicate *becomes* false.
 * Whenever is disposed.
 
 Note that this means that an outer disposal of whenever will trigger inner unsubscriptions, if there's effects to clean up.
